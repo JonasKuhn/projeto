@@ -5,7 +5,7 @@
 # Project name:                                                          #
 # Author:                                                                #
 # Script type:           Database creation script                        #
-# Created on:            2019-08-04 23:56                                #
+# Created on:            2019-08-06 19:20                                #
 # ---------------------------------------------------------------------- #
 
 
@@ -54,8 +54,8 @@ CREATE TABLE `tb_historia` (
     `cod_historia` INTEGER NOT NULL AUTO_INCREMENT,
     `titulo` VARCHAR(100),
     `descricao` TEXT,
-    `cod_loja` INTEGER,
     `cod_img` INTEGER,
+    `cod_loja` INTEGER,
     CONSTRAINT `PK_tb_historia` PRIMARY KEY (`cod_historia`)
 );
 
@@ -123,13 +123,13 @@ CREATE TABLE `tb_banner` (
 );
 
 # ---------------------------------------------------------------------- #
-# Add table "tb_imagen"                                                  #
+# Add table "tb_imagem"                                                  #
 # ---------------------------------------------------------------------- #
 
-CREATE TABLE `tb_imagen` (
+CREATE TABLE `tb_imagem` (
     `cod_img` INTEGER NOT NULL AUTO_INCREMENT,
     `nome` TEXT,
-    CONSTRAINT `PK_tb_imagen` PRIMARY KEY (`cod_img`)
+    CONSTRAINT `PK_tb_imagem` PRIMARY KEY (`cod_img`)
 );
 
 # ---------------------------------------------------------------------- #
@@ -139,8 +139,9 @@ CREATE TABLE `tb_imagen` (
 CREATE TABLE `tb_destaque_pc` (
     `cod_destaque_pc` INTEGER NOT NULL,
     `fl_ativo` BOOL,
-    `cod_loja` INTEGER,
+    `img` TEXT,
     `cod_processador` INTEGER,
+    `cod_loja` INTEGER,
     CONSTRAINT `PK_tb_destaque_pc` PRIMARY KEY (`cod_destaque_pc`)
 );
 
@@ -193,7 +194,7 @@ CREATE TABLE `tb_processador` (
 
 CREATE TABLE `tb_memoria` (
     `cod_memoria` INTEGER NOT NULL,
-    `descricao` VARCHAR(40),
+    `descricao` TEXT,
     `cod_fornecedor` INTEGER,
     CONSTRAINT `PK_tb_memoria` PRIMARY KEY (`cod_memoria`)
 );
@@ -205,6 +206,7 @@ CREATE TABLE `tb_memoria` (
 CREATE TABLE `tb_placa_mae` (
     `cod_placa_mae` INTEGER NOT NULL,
     `descricao` TEXT,
+    `cod_fornecedor` INTEGER,
     CONSTRAINT `PK_tb_placa_mae` PRIMARY KEY (`cod_placa_mae`)
 );
 
@@ -225,7 +227,7 @@ CREATE TABLE `tb_placa_video` (
 
 CREATE TABLE `tb_fonte` (
     `cod_fonte` INTEGER NOT NULL,
-    `descricao` VARCHAR(40),
+    `descricao` TEXT,
     `cod_fornecedor` INTEGER,
     CONSTRAINT `PK_tb_fonte` PRIMARY KEY (`cod_fonte`)
 );
@@ -277,6 +279,7 @@ CREATE TABLE `tb_cliente` (
     `endereco` VARCHAR(100),
     `nr` NUMERIC(4),
     `cpf` VARCHAR(11),
+    `cod_cidade` INTEGER,
     `cod_loja` INTEGER,
     CONSTRAINT `PK_tb_cliente` PRIMARY KEY (`cod_cliente`)
 );
@@ -411,8 +414,8 @@ CREATE TABLE `tb_sistema` (
     `titulo` TEXT,
     `descricao` TEXT,
     `link` TEXT,
-    `cod_loja` INTEGER,
     `cod_img` INTEGER,
+    `cod_loja` INTEGER,
     CONSTRAINT `PK_tb_sistema` PRIMARY KEY (`cod_sistema`)
 );
 
@@ -425,8 +428,8 @@ CREATE TABLE `tb_tim` (
     `titulo` TEXT,
     `descricao` TEXT,
     `link` TEXT,
-    `cod_loja` INTEGER,
     `cod_img` INTEGER,
+    `cod_loja` INTEGER,
     CONSTRAINT `PK_tb_tim` PRIMARY KEY (`cod_tim`)
 );
 
@@ -443,8 +446,8 @@ ALTER TABLE `tb_admin` ADD CONSTRAINT `tb_loja_tb_admin`
 ALTER TABLE `tb_historia` ADD CONSTRAINT `tb_loja_tb_historia` 
     FOREIGN KEY (`cod_loja`) REFERENCES `tb_loja` (`cod_loja`);
 
-ALTER TABLE `tb_historia` ADD CONSTRAINT `tb_imagen_tb_historia` 
-    FOREIGN KEY (`cod_img`) REFERENCES `tb_imagen` (`cod_img`);
+ALTER TABLE `tb_historia` ADD CONSTRAINT `tb_imagem_tb_historia` 
+    FOREIGN KEY (`cod_img`) REFERENCES `tb_imagem` (`cod_img`);
 
 ALTER TABLE `tb_cidade` ADD CONSTRAINT `tb_estado_tb_cidade` 
     FOREIGN KEY (`cod_estado`) REFERENCES `tb_estado` (`cod_estado`);
@@ -464,8 +467,8 @@ ALTER TABLE `tb_destaque_pc` ADD CONSTRAINT `tb_processador_tb_destaque_pc`
 ALTER TABLE `tb_destaque_cel` ADD CONSTRAINT `tb_loja_tb_destaque_cel` 
     FOREIGN KEY (`cod_loja`) REFERENCES `tb_loja` (`cod_loja`);
 
-ALTER TABLE `tb_img_dest_cel` ADD CONSTRAINT `tb_imagen_tb_img_dest_cel` 
-    FOREIGN KEY (`cod_img`) REFERENCES `tb_imagen` (`cod_img`);
+ALTER TABLE `tb_img_dest_cel` ADD CONSTRAINT `tb_imagem_tb_img_dest_cel` 
+    FOREIGN KEY (`cod_img`) REFERENCES `tb_imagem` (`cod_img`);
 
 ALTER TABLE `tb_img_dest_cel` ADD CONSTRAINT `tb_destaque_cel_tb_img_dest_cel` 
     FOREIGN KEY (`cod_destaque_cel`) REFERENCES `tb_destaque_cel` (`cod_destaque_cel`);
@@ -474,6 +477,9 @@ ALTER TABLE `tb_processador` ADD CONSTRAINT `tb_fornecedor_tb_processador`
     FOREIGN KEY (`cod_fornecedor`) REFERENCES `tb_fornecedor` (`cod_fornecedor`);
 
 ALTER TABLE `tb_memoria` ADD CONSTRAINT `tb_fornecedor_tb_memoria` 
+    FOREIGN KEY (`cod_fornecedor`) REFERENCES `tb_fornecedor` (`cod_fornecedor`);
+
+ALTER TABLE `tb_placa_mae` ADD CONSTRAINT `tb_fornecedor_tb_placa_mae` 
     FOREIGN KEY (`cod_fornecedor`) REFERENCES `tb_fornecedor` (`cod_fornecedor`);
 
 ALTER TABLE `tb_placa_video` ADD CONSTRAINT `tb_fornecedor_tb_placa_video` 
@@ -493,6 +499,9 @@ ALTER TABLE `tb_orc_cliente` ADD CONSTRAINT `tb_cliente_tb_orc_cliente`
 
 ALTER TABLE `tb_orc_cliente` ADD CONSTRAINT `tb_pc_tb_orc_cliente` 
     FOREIGN KEY (`cod_pc`) REFERENCES `tb_pc` (`cod_pc`);
+
+ALTER TABLE `tb_cliente` ADD CONSTRAINT `tb_cidade_tb_cliente` 
+    FOREIGN KEY (`cod_cidade`) REFERENCES `tb_cidade` (`cod_cidade`);
 
 ALTER TABLE `tb_cliente` ADD CONSTRAINT `tb_loja_tb_cliente` 
     FOREIGN KEY (`cod_loja`) REFERENCES `tb_loja` (`cod_loja`);
@@ -551,11 +560,11 @@ ALTER TABLE `tb_plmae_cooler` ADD CONSTRAINT `tb_placa_mae_tb_plmae_cooler`
 ALTER TABLE `tb_sistema` ADD CONSTRAINT `tb_loja_tb_sistema` 
     FOREIGN KEY (`cod_loja`) REFERENCES `tb_loja` (`cod_loja`);
 
-ALTER TABLE `tb_sistema` ADD CONSTRAINT `tb_imagen_tb_sistema` 
-    FOREIGN KEY (`cod_img`) REFERENCES `tb_imagen` (`cod_img`);
+ALTER TABLE `tb_sistema` ADD CONSTRAINT `tb_imagem_tb_sistema` 
+    FOREIGN KEY (`cod_img`) REFERENCES `tb_imagem` (`cod_img`);
 
 ALTER TABLE `tb_tim` ADD CONSTRAINT `tb_loja_tb_tim` 
     FOREIGN KEY (`cod_loja`) REFERENCES `tb_loja` (`cod_loja`);
 
-ALTER TABLE `tb_tim` ADD CONSTRAINT `tb_imagen_tb_tim` 
-    FOREIGN KEY (`cod_img`) REFERENCES `tb_imagen` (`cod_img`);
+ALTER TABLE `tb_tim` ADD CONSTRAINT `tb_imagem_tb_tim` 
+    FOREIGN KEY (`cod_img`) REFERENCES `tb_imagem` (`cod_img`);

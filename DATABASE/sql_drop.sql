@@ -5,7 +5,7 @@
 # Project name:                                                          #
 # Author:                                                                #
 # Script type:           Database drop script                            #
-# Created on:            2019-08-04 23:56                                #
+# Created on:            2019-08-16 19:22                                #
 # ---------------------------------------------------------------------- #
 
 
@@ -19,7 +19,7 @@ ALTER TABLE `tb_admin` DROP FOREIGN KEY `tb_loja_tb_admin`;
 
 ALTER TABLE `tb_historia` DROP FOREIGN KEY `tb_loja_tb_historia`;
 
-ALTER TABLE `tb_historia` DROP FOREIGN KEY `tb_imagen_tb_historia`;
+ALTER TABLE `tb_historia` DROP FOREIGN KEY `tb_imagem_tb_historia`;
 
 ALTER TABLE `tb_cidade` DROP FOREIGN KEY `tb_estado_tb_cidade`;
 
@@ -27,19 +27,17 @@ ALTER TABLE `tb_visita` DROP FOREIGN KEY `tb_loja_tb_visita`;
 
 ALTER TABLE `tb_banner` DROP FOREIGN KEY `tb_loja_tb_banner`;
 
-ALTER TABLE `tb_destaque_pc` DROP FOREIGN KEY `tb_loja_tb_destaque_pc`;
+ALTER TABLE `tb_celular` DROP FOREIGN KEY `tb_loja_tb_celular`;
 
-ALTER TABLE `tb_destaque_pc` DROP FOREIGN KEY `tb_processador_tb_destaque_pc`;
+ALTER TABLE `tb_img_cel` DROP FOREIGN KEY `tb_imagem_tb_img_cel`;
 
-ALTER TABLE `tb_destaque_cel` DROP FOREIGN KEY `tb_loja_tb_destaque_cel`;
-
-ALTER TABLE `tb_img_dest_cel` DROP FOREIGN KEY `tb_imagen_tb_img_dest_cel`;
-
-ALTER TABLE `tb_img_dest_cel` DROP FOREIGN KEY `tb_destaque_cel_tb_img_dest_cel`;
+ALTER TABLE `tb_img_cel` DROP FOREIGN KEY `tb_celular_tb_img_cel`;
 
 ALTER TABLE `tb_processador` DROP FOREIGN KEY `tb_fornecedor_tb_processador`;
 
 ALTER TABLE `tb_memoria` DROP FOREIGN KEY `tb_fornecedor_tb_memoria`;
+
+ALTER TABLE `tb_placa_mae` DROP FOREIGN KEY `tb_fornecedor_tb_placa_mae`;
 
 ALTER TABLE `tb_placa_video` DROP FOREIGN KEY `tb_fornecedor_tb_placa_video`;
 
@@ -47,15 +45,21 @@ ALTER TABLE `tb_fonte` DROP FOREIGN KEY `tb_fornecedor_tb_fonte`;
 
 ALTER TABLE `tb_hd` DROP FOREIGN KEY `tb_fornecedor_tb_hd`;
 
-ALTER TABLE `tb_orc_cliente` DROP FOREIGN KEY `tb_status_tb_orc_cliente`;
+ALTER TABLE `tb_pc` DROP FOREIGN KEY `tb_status_tb_pc`;
 
-ALTER TABLE `tb_orc_cliente` DROP FOREIGN KEY `tb_cliente_tb_orc_cliente`;
+ALTER TABLE `tb_pc` DROP FOREIGN KEY `tb_cliente_tb_pc`;
 
-ALTER TABLE `tb_orc_cliente` DROP FOREIGN KEY `tb_pc_tb_orc_cliente`;
+ALTER TABLE `tb_pc` DROP FOREIGN KEY `tb_cooler_tb_pc`;
+
+ALTER TABLE `tb_pc` DROP FOREIGN KEY `tb_gabinete_tb_pc`;
+
+ALTER TABLE `tb_pc` DROP FOREIGN KEY `tb_fonte_tb_pc`;
+
+ALTER TABLE `tb_pc` DROP FOREIGN KEY `tb_placa_video_tb_pc`;
+
+ALTER TABLE `tb_cliente` DROP FOREIGN KEY `tb_cidade_tb_cliente`;
 
 ALTER TABLE `tb_cliente` DROP FOREIGN KEY `tb_loja_tb_cliente`;
-
-ALTER TABLE `tb_pc` DROP FOREIGN KEY `tb_processador_tb_pc`;
 
 ALTER TABLE `tb_gabinete` DROP FOREIGN KEY `tb_fornecedor_tb_gabinete`;
 
@@ -85,29 +89,79 @@ ALTER TABLE `tb_plmae_gab` DROP FOREIGN KEY `tb_gabinete_tb_plmae_gab`;
 
 ALTER TABLE `tb_cooler` DROP FOREIGN KEY `tb_fornecedor_tb_cooler`;
 
-ALTER TABLE `tb_plmae_cooler` DROP FOREIGN KEY `tb_cooler_tb_plmae_cooler`;
-
-ALTER TABLE `tb_plmae_cooler` DROP FOREIGN KEY `tb_placa_mae_tb_plmae_cooler`;
-
 ALTER TABLE `tb_sistema` DROP FOREIGN KEY `tb_loja_tb_sistema`;
 
-ALTER TABLE `tb_sistema` DROP FOREIGN KEY `tb_imagen_tb_sistema`;
+ALTER TABLE `tb_sistema` DROP FOREIGN KEY `tb_imagem_tb_sistema`;
 
 ALTER TABLE `tb_tim` DROP FOREIGN KEY `tb_loja_tb_tim`;
 
-ALTER TABLE `tb_tim` DROP FOREIGN KEY `tb_imagen_tb_tim`;
+ALTER TABLE `tb_tim` DROP FOREIGN KEY `tb_imagem_tb_tim`;
+
+ALTER TABLE `tb_sobre` DROP FOREIGN KEY `tb_loja_tb_sobre`;
+
+ALTER TABLE `tb_proc_cool` DROP FOREIGN KEY `tb_cooler_tb_proc_cool`;
+
+ALTER TABLE `tb_proc_cool` DROP FOREIGN KEY `tb_processador_tb_proc_cool`;
+
+ALTER TABLE `tb_pc_hd` DROP FOREIGN KEY `tb_hd_tb_pc_hd`;
+
+ALTER TABLE `tb_pc_hd` DROP FOREIGN KEY `tb_pc_tb_pc_hd`;
+
+ALTER TABLE `tb_pc_mem` DROP FOREIGN KEY `tb_memoria_tb_pc_mem`;
+
+ALTER TABLE `tb_pc_mem` DROP FOREIGN KEY `tb_pc_tb_pc_mem`;
 
 # ---------------------------------------------------------------------- #
-# Drop table "tb_orc_cliente"                                            #
+# Drop table "tb_pc_mem"                                                 #
 # ---------------------------------------------------------------------- #
 
 # Drop constraints #
 
-ALTER TABLE `tb_orc_cliente` DROP PRIMARY KEY;
+ALTER TABLE `tb_pc_mem` DROP PRIMARY KEY;
 
 # Drop table #
 
-DROP TABLE `tb_orc_cliente`;
+DROP TABLE `tb_pc_mem`;
+
+# ---------------------------------------------------------------------- #
+# Drop table "tb_pc_hd"                                                  #
+# ---------------------------------------------------------------------- #
+
+# Drop constraints #
+
+ALTER TABLE `tb_pc_hd` DROP PRIMARY KEY;
+
+# Drop table #
+
+DROP TABLE `tb_pc_hd`;
+
+# ---------------------------------------------------------------------- #
+# Drop table "tb_pc"                                                     #
+# ---------------------------------------------------------------------- #
+
+# Drop constraints #
+
+ALTER TABLE `tb_pc` DROP PRIMARY KEY;
+
+# Drop table #
+
+DROP TABLE `tb_pc`;
+
+# ---------------------------------------------------------------------- #
+# Drop table "tb_sobre"                                                  #
+# ---------------------------------------------------------------------- #
+
+# Remove autoinc for PK drop #
+
+ALTER TABLE `tb_sobre` MODIFY `cod_sobre` INTEGER NOT NULL;
+
+# Drop constraints #
+
+ALTER TABLE `tb_sobre` DROP PRIMARY KEY;
+
+# Drop table #
+
+DROP TABLE `tb_sobre`;
 
 # ---------------------------------------------------------------------- #
 # Drop table "tb_tim"                                                    #
@@ -146,40 +200,28 @@ ALTER TABLE `tb_cliente` DROP PRIMARY KEY;
 DROP TABLE `tb_cliente`;
 
 # ---------------------------------------------------------------------- #
-# Drop table "tb_img_dest_cel"                                           #
+# Drop table "tb_img_cel"                                                #
 # ---------------------------------------------------------------------- #
 
 # Drop constraints #
 
-ALTER TABLE `tb_img_dest_cel` DROP PRIMARY KEY;
+ALTER TABLE `tb_img_cel` DROP PRIMARY KEY;
 
 # Drop table #
 
-DROP TABLE `tb_img_dest_cel`;
+DROP TABLE `tb_img_cel`;
 
 # ---------------------------------------------------------------------- #
-# Drop table "tb_destaque_cel"                                           #
+# Drop table "tb_celular"                                                #
 # ---------------------------------------------------------------------- #
 
 # Drop constraints #
 
-ALTER TABLE `tb_destaque_cel` DROP PRIMARY KEY;
+ALTER TABLE `tb_celular` DROP PRIMARY KEY;
 
 # Drop table #
 
-DROP TABLE `tb_destaque_cel`;
-
-# ---------------------------------------------------------------------- #
-# Drop table "tb_destaque_pc"                                            #
-# ---------------------------------------------------------------------- #
-
-# Drop constraints #
-
-ALTER TABLE `tb_destaque_pc` DROP PRIMARY KEY;
-
-# Drop table #
-
-DROP TABLE `tb_destaque_pc`;
+DROP TABLE `tb_celular`;
 
 # ---------------------------------------------------------------------- #
 # Drop table "tb_banner"                                                 #
@@ -262,16 +304,16 @@ ALTER TABLE `tb_loja` DROP PRIMARY KEY;
 DROP TABLE `tb_loja`;
 
 # ---------------------------------------------------------------------- #
-# Drop table "tb_plmae_cooler"                                           #
+# Drop table "tb_proc_cool"                                              #
 # ---------------------------------------------------------------------- #
 
 # Drop constraints #
 
-ALTER TABLE `tb_plmae_cooler` DROP PRIMARY KEY;
+ALTER TABLE `tb_proc_cool` DROP PRIMARY KEY;
 
 # Drop table #
 
-DROP TABLE `tb_plmae_cooler`;
+DROP TABLE `tb_proc_cool`;
 
 # ---------------------------------------------------------------------- #
 # Drop table "tb_cooler"                                                 #
@@ -370,18 +412,6 @@ ALTER TABLE `tb_gabinete` DROP PRIMARY KEY;
 DROP TABLE `tb_gabinete`;
 
 # ---------------------------------------------------------------------- #
-# Drop table "tb_pc"                                                     #
-# ---------------------------------------------------------------------- #
-
-# Drop constraints #
-
-ALTER TABLE `tb_pc` DROP PRIMARY KEY;
-
-# Drop table #
-
-DROP TABLE `tb_pc`;
-
-# ---------------------------------------------------------------------- #
 # Drop table "tb_hd"                                                     #
 # ---------------------------------------------------------------------- #
 
@@ -416,6 +446,18 @@ ALTER TABLE `tb_placa_video` DROP PRIMARY KEY;
 # Drop table #
 
 DROP TABLE `tb_placa_video`;
+
+# ---------------------------------------------------------------------- #
+# Drop table "tb_placa_mae"                                              #
+# ---------------------------------------------------------------------- #
+
+# Drop constraints #
+
+ALTER TABLE `tb_placa_mae` DROP PRIMARY KEY;
+
+# Drop table #
+
+DROP TABLE `tb_placa_mae`;
 
 # ---------------------------------------------------------------------- #
 # Drop table "tb_memoria"                                                #
@@ -482,32 +524,20 @@ ALTER TABLE `tb_status` DROP PRIMARY KEY;
 DROP TABLE `tb_status`;
 
 # ---------------------------------------------------------------------- #
-# Drop table "tb_placa_mae"                                              #
-# ---------------------------------------------------------------------- #
-
-# Drop constraints #
-
-ALTER TABLE `tb_placa_mae` DROP PRIMARY KEY;
-
-# Drop table #
-
-DROP TABLE `tb_placa_mae`;
-
-# ---------------------------------------------------------------------- #
-# Drop table "tb_imagen"                                                 #
+# Drop table "tb_imagem"                                                 #
 # ---------------------------------------------------------------------- #
 
 # Remove autoinc for PK drop #
 
-ALTER TABLE `tb_imagen` MODIFY `cod_img` INTEGER NOT NULL;
+ALTER TABLE `tb_imagem` MODIFY `cod_img` INTEGER NOT NULL;
 
 # Drop constraints #
 
-ALTER TABLE `tb_imagen` DROP PRIMARY KEY;
+ALTER TABLE `tb_imagem` DROP PRIMARY KEY;
 
 # Drop table #
 
-DROP TABLE `tb_imagen`;
+DROP TABLE `tb_imagem`;
 
 # ---------------------------------------------------------------------- #
 # Drop table "tb_estado"                                                 #
@@ -524,19 +554,3 @@ ALTER TABLE `tb_estado` DROP PRIMARY KEY;
 # Drop table #
 
 DROP TABLE `tb_estado`;
-
-# ---------------------------------------------------------------------- #
-# Drop table "tb_contato"                                                #
-# ---------------------------------------------------------------------- #
-
-# Remove autoinc for PK drop #
-
-ALTER TABLE `tb_contato` MODIFY `cod_contato` INTEGER NOT NULL;
-
-# Drop constraints #
-
-ALTER TABLE `tb_contato` DROP PRIMARY KEY;
-
-# Drop table #
-
-DROP TABLE `tb_contato`;
